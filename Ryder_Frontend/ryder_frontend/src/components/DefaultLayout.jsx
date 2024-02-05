@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Logo from '../assets/images/Logo.png';
-import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Link, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { FormUp, FormDown, Menu, Close, User } from 'grommet-icons';
 import { HashLink } from 'react-router-hash-link';
 import { useStateContext } from '../context/ContextProvider';
@@ -9,10 +9,13 @@ import Notification_Icon from '../assets/icons/notification_icon.png';
 export default function DefaultLayout() {
   const userDetailsUrl = "/users/me";
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const { userToken } = useStateContext();
+  const { userToken, setCurrentUser, setUserToken } = useStateContext();
   const [ dropDown, setDropDown ] = useState(false);
   const [ menu, setMenu ] = useState(false);
+
+  const username = localStorage.getItem('USER_NAME');
 
   const handleDropDown = () => {
       setDropDown(!dropDown);
@@ -22,18 +25,24 @@ export default function DefaultLayout() {
   }
 
   if(!userToken){
-    return <Navigate to={"/guest/login"} />
+    return <Navigate to={"/"} />
   }
 
-  const getUserDetails = async () => {
-    try{
-      const response = await axiosClient.get(userDetailsUrl);
-      console.log(response.data.data.user);
-      setCurrentUser(response.data.data.user);
-    }catch(err){
-      console.log(err.message);
-    }
-  }
+  // const getUserDetails = async () => {
+  //   try{
+  //     const response = await axiosClient.get(userDetailsUrl);
+  //     console.log(response.data.data.user);
+  //     setCurrentUser(response.data.data.user);
+  //   }catch(err){
+  //     console.log(err.message);
+  //   }
+  // }
+
+  const logout = () => {
+      localStorage.clear();
+      setCurrentUser({});
+      setUserToken(null);
+  };
 
   return (
     <section>
@@ -58,12 +67,12 @@ export default function DefaultLayout() {
           </ul>
         </div>
         }
-        {location.pathname === "/customerdashboard" && 
+        {location.pathname === "/default/customerdashboard" && 
         <div className='w-full sm:block hidden'>
           <ul className='flex justify-center space-x-5 py-2 text-slate-700'>
             <li className='capitalize hover:font-semibold hover:text-orange-500 transform duration-300 ease-in-out'><Link to={"/requestrider"} smooth>request rider</Link></li>
             <li className='capitalize hover:font-semibold hover:text-orange-500 transform duration-300 ease-in-out'><Link to={""} smooth>payment</Link></li>
-            <li className='capitalize hover:font-semibold hover:text-orange-500 transform duration-300 ease-in-out'><Link to={""} smooth>logout</Link></li>
+            <li className='capitalize hover:font-semibold hover:text-orange-500 transform duration-300 ease-in-out cursor-pointer' onClick={logout}>logout</li>
           </ul>
         </div>
         }
@@ -80,7 +89,7 @@ export default function DefaultLayout() {
             <div className='flex justify-center border-2 border-slate-500 sm:w-8 sm:h-8 rounded-full'>
               <User />
             </div>
-            <p>udeme kendrick</p>
+            <p>{username}</p>
           </div>
         </div>
         ) : (

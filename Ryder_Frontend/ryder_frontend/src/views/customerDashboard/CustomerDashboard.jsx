@@ -8,6 +8,7 @@ import LocationIcon from '../../assets/icons/location_icon.png';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function CustomerDashboard() {
+    // const paymentData = JSON.parse(localStorage.getItem('PAYMENT_RESPONSE')) || [];
 
   return (
     <div className='bg-slate-100'>

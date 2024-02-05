@@ -9,7 +9,7 @@ export default function GuestLayout() {
   const { userToken } = useStateContext();
 
     if(userToken){
-        return <Navigate to={"/customerdashboard"} />
+        return <Navigate to={"/default/customerdashboard"} />
     }
 
   return (

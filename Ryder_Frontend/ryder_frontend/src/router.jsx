@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
 import SignUp from "./views/signup/SignUp";
@@ -16,6 +16,28 @@ import RidersHistory from "./views/ridersHistory/RidersHistory";
 
 const router = createBrowserRouter([
     {
+        path: "/",
+        element: <LandingPage />,
+    },
+    {
+        path: "/default",
+        element: <DefaultLayout />,
+        children: [
+            {
+                path: "customerdashboard",
+                element: <CustomerDashboard />,
+            },
+            {
+                path: "requestrider",
+                element: <RequestRider />,
+            },
+            {
+                path: "ridershistory",
+                element: <RidersHistory />,
+            }
+        ]
+    },
+    {
         path: "/guest",
         element: <GuestLayout />,
         children: [
@@ -30,28 +52,6 @@ const router = createBrowserRouter([
             {
                 path: "reset-password",
                 element: <ResetPassword />,
-            }
-        ]
-    },
-    {
-        path: "/",
-        element: <DefaultLayout />,
-        children: [
-            {
-                path: "/",
-                element: <LandingPage />,
-            },
-            {
-                path: "/customerdashboard",
-                element: <CustomerDashboard />,
-            },
-            {
-                path: "/requestrider",
-                element: <RequestRider />,
-            },
-            {
-                path: "/ridershistory",
-                element: <RidersHistory />,
             }
         ]
     },

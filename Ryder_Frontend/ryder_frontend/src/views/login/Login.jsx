@@ -35,8 +35,11 @@ export default function Login() {
             const response = await axiosClient.post(userLoginUrl, userDetails);
             setCurrentUser(response.data.data.user.status);
             setUserToken(response.data.data.token);
-            navigate('/');
-            console.log(response.data.message);
+            localStorage.setItem('USER_ID', response.data.data.user.userId);
+            localStorage.setItem('USER_NAME', response.data.data.user.name);
+            localStorage.setItem('USER_EMAIL', response.data.data.user.email);
+            navigate('/default/customerdashboard');
+            console.log(response.data);
             toast.success(response.data.message);
             setEmail('')
             setPassword('')
